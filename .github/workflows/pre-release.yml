@@ -26,7 +26,7 @@ jobs:
       - run: |
           git push
           git push origin --tags
-     
+
   build-and-deploy:
     needs: update-version
     runs-on: ubuntu-latest

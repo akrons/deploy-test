@@ -1,6 +1,5 @@
-packages
 
-name: create release
+name: release
 
 on:
     milestone:

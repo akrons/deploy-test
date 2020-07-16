@@ -1,0 +1,45 @@
+packages
+
+name: create release
+
+on:
+    milestone:
+      types: [closed]
+
+jobs:
+    update-version:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v2
+            with:
+                fetch-depth: 0
+          - uses: actions/setup-node@v1
+            with:
+              node-version: 12
+          - run: |
+              git config --global user.email "you@example.com"
+              git config --global user.name "CI"
+              git fetch
+          - run: npm i
+          - run: npm run release
+          - run: |
+              git push
+              git push origin --tags
+         
+      build-and-deploy:
+        needs: update-version
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+          with:
+            ref: ${{github.ref}}
+        - uses: actions/setup-node@v1
+          with:
+            node-version: 12
+            registry-url: https://registry.npmjs.org/
+        - run: npm ci
+        - run: npm run build --if-present
+        - run: npm publish --tag latest
+          env:
+            NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+    

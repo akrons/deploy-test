@@ -1,6 +1,6 @@
 {
   "name": "@akrons/deploy-test",
-  "version": "1.0.1-rc.4",
+  "version": "1.0.1-rc.5",
   "description": "",
   "main": "index.js",
   "scripts": {

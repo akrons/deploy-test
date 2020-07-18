@@ -27,7 +27,7 @@ jobs:
           git push
           git push origin --tags
 
-  build-and-deploy:
+  build:
     needs: update-version
     runs-on: ubuntu-latest
     steps:
@@ -40,6 +40,26 @@ jobs:
         registry-url: https://registry.npmjs.org/
     - run: npm ci
     - run: npm run build --if-present
+    - run: |
+        cp ./package.json ./dist
+        cp ./readme.md ./dist
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build
+        path: ./dist
+
+
+  npm-publish:
+    needs: update-version
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+        registry-url: https://registry.npmjs.org/
+    - uses: actions/download-artifact@v1
+      with:
+        name: build
     - run: npm publish --tag rc
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

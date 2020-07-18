@@ -10,8 +10,8 @@ on:
           runs-on: ubuntu-latest
           steps:
             - uses: actions/checkout@v2
-            with:
-              fetch-depth: 0
+              with:
+                fetch-depth: 0
             - uses: actions/setup-node@v1
               with:
                 node-version: 12
@@ -58,6 +58,7 @@ on:
           - uses: actions/download-artifact@v1
             with:
               name: build
+              path: ./
           - run: npm publish --tag latest
             env:
               NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

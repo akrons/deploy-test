@@ -60,6 +60,7 @@ jobs:
     - uses: actions/download-artifact@v1
       with:
         name: build
+        path: ./
     - run: npm publish --tag rc
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
